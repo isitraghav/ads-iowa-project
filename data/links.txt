@@ -1,0 +1,39 @@
+DATA SOURCES - Iowa Liquor Sales 2025 + US Census county data
+=============================================================
+
+1) Iowa Liquor Sales (transaction-level, Jan-Dec 2025)
+   Publisher: Iowa Department of Revenue, Alcoholic Beverages Division (via State of Iowa open data portal)
+   Dataset page: https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy
+   Agency site:  https://abd.iowa.gov/
+   Files (data/raw/iowa_liquor_sales/): iowa_liquor_sales_2025_1262_rows_part_0001.csv ... part_0005.csv
+   NOTE: confirm this is the exact page/export you downloaded from and record the download date.
+
+2) American Community Survey (ACS) 5-year estimates, 2020-2024 - US Census Bureau
+   Summary file directory: https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/
+   Documentation:          https://www.census.gov/programs-surveys/acs/data/summary-file.html
+   Table browser:          https://data.census.gov/
+   Files (data/raw/census/, Iowa counties only, downloaded by scripts/fetch_census.py):
+     census_acs5y2024_b01001_iowa_counties.dat  Sex by age               https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b01001.dat
+     census_acs5y2024_b01002_iowa_counties.dat  Median age               https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b01002.dat
+     census_acs5y2024_b01003_iowa_counties.dat  Total population         https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b01003.dat
+     census_acs5y2024_b02001_iowa_counties.dat  Race                     https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b02001.dat
+     census_acs5y2024_b03003_iowa_counties.dat  Hispanic or Latino       https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b03003.dat
+     census_acs5y2024_b11001_iowa_counties.dat  Households               https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b11001.dat
+     census_acs5y2024_b15003_iowa_counties.dat  Educational attainment   https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b15003.dat
+     census_acs5y2024_b17001_iowa_counties.dat  Poverty status           https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b17001.dat
+     census_acs5y2024_b19013_iowa_counties.dat  Median household income  https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b19013.dat
+     census_acs5y2024_b19083_iowa_counties.dat  Gini index               https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b19083.dat
+     census_acs5y2024_b19301_iowa_counties.dat  Per capita income        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b19301.dat
+     census_acs5y2024_b23025_iowa_counties.dat  Employment status        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b23025.dat
+     census_acs5y2024_b25003_iowa_counties.dat  Tenure                   https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25003.dat
+     census_acs5y2024_b25010_iowa_counties.dat  Average household size   https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25010.dat
+     census_acs5y2024_b25064_iowa_counties.dat  Median gross rent        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25064.dat
+     census_acs5y2024_b25077_iowa_counties.dat  Median home value        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25077.dat
+
+3) Census Gazetteer Files 2024 - Counties (land area, lat/lon) - US Census Bureau
+   Download:      https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/2024_Gaz_counties_national.zip
+   Documentation: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
+   File: data/raw/census/census_gazetteer2024_iowa_counties.txt
+
+Join key: 5-digit county FIPS code (Iowa state FIPS 19 + 3-digit county code).
+Census files downloaded: 2026-10-24.

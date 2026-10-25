@@ -1,0 +1,8 @@
+# Large liquor sales CSVs exceed GitHub's 100 MB file limit.
+# Download raw parts from data/links.txt; rebuild processed data with scripts/join_datasets.py.
+data/raw/iowa_liquor_sales/*.csv
+data/processed/iowa_liquor_sales_2025_census_integrated.csv
+
+__pycache__/
+*.pyc
+.venv/
