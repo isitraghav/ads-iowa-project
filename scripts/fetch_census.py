@@ -1,24 +1,20 @@
 """Download the US Census source data used to enrich the Iowa liquor sales data.
 
-Sources (no API key required):
-  1. American Community Survey (ACS) 5-year estimates, 2020-2024, table-based summary files
-     https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/
-  2. Census Gazetteer 2024, counties (land area and internal point lat/lon)
-     https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/
+Source (no API key required):
+  American Community Survey (ACS) 5-year estimates, 2020-2024, table-based summary files
+  https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/
 
 The national files are streamed and only Iowa county rows (GEO_ID 0500000US19xxx,
 state FIPS 19) are kept. Columns and values are saved exactly as published.
 
 Output (data/raw/census/):
   census_acs5y2024_<table>_iowa_counties.dat   pipe-delimited, one per ACS table
-  census_gazetteer2024_iowa_counties.txt       tab-delimited
 
 Usage:  python scripts/fetch_census.py
 """
 import io
 import os
 import urllib.request
-import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CENSUS_DIR = os.path.join(ROOT, "data", "raw", "census")
@@ -42,8 +38,6 @@ ACS_TABLES = {
     "b25064": "Median gross rent",
     "b25077": "Median home value",
 }
-GAZ_URL = ("https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/"
-           "2024_Gaz_counties_national.zip")
 IOWA_COUNTY_PREFIX = "0500000US19"
 
 
@@ -63,24 +57,9 @@ def fetch_acs_table(table):
         raise SystemExit(f"Expected 99 Iowa counties in {table}, got {kept}")
 
 
-def fetch_gazetteer():
-    out = os.path.join(CENSUS_DIR, "census_gazetteer2024_iowa_counties.txt")
-    with urllib.request.urlopen(GAZ_URL, timeout=300) as resp:
-        zf = zipfile.ZipFile(io.BytesIO(resp.read()))
-    lines = zf.read(zf.namelist()[0]).decode("utf-8").splitlines()
-    rows = [lines[0]] + [l for l in lines[1:] if l.split("\t")[0] == "IA"]
-    with open(out, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write("\n".join(r.rstrip() for r in rows) + "\n")
-    print(f"  gazetteer: {len(rows) - 1} counties -> {os.path.basename(out)}")
-    if len(rows) - 1 != 99:
-        raise SystemExit(f"Expected 99 Iowa counties in gazetteer, got {len(rows) - 1}")
-
-
 if __name__ == "__main__":
     os.makedirs(CENSUS_DIR, exist_ok=True)
     print("Downloading ACS 5-year 2020-2024 tables (Iowa counties only)...")
     for t in ACS_TABLES:
         fetch_acs_table(t)
-    print("Downloading Census Gazetteer 2024 counties...")
-    fetch_gazetteer()
     print("Done.")

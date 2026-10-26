@@ -3,7 +3,6 @@
 Inputs:
   data/raw/iowa_liquor_sales/iowa_liquor_sales_2025_*_part_*.csv  transaction-level liquor sales (5 parts)
   data/raw/census/census_acs5y2024_<table>_iowa_counties.dat      ACS 5-year 2020-2024, Iowa counties (run fetch_census.py)
-  data/raw/census/census_gazetteer2024_iowa_counties.txt          Census Gazetteer 2024, Iowa counties
 
 Outputs (data/processed/):
   census_iowa_counties.csv                     one row per county: the derived census variables
@@ -11,7 +10,7 @@ Outputs (data/processed/):
 
 Join logic:
   - Join key: 5-digit county FIPS (liquor `county_fips_code` = last 5 chars of ACS GEO_ID
-    0500000USsscccc = Gazetteer GEOID). Left join: every liquor row is kept.
+    0500000USsscccc). Left join: every liquor row is kept.
   - Rows with a blank county are filled from the same `store_no` in other rows when the
     store maps to exactly one county; such rows get county_imputed_from_store = 1.
   - Exact duplicate rows (identical in every column) are kept but flagged:
@@ -49,12 +48,6 @@ def load_acs(table):
     return out
 
 
-def load_gazetteer():
-    path = os.path.join(CENSUS_DIR, "census_gazetteer2024_iowa_counties.txt")
-    with open(path, encoding="utf-8") as fh:
-        return {r["GEOID"]: r for r in csv.DictReader(fh, delimiter="\t")}
-
-
 def pct(num, den):
     return round(100 * num / den, 2) if num is not None and den else None
 
@@ -63,18 +56,15 @@ def build_county_table():
     t = {name: load_acs(name) for name in (
         "b01001", "b01002", "b01003", "b02001", "b03003", "b11001", "b15003", "b17001",
         "b19013", "b19083", "b19301", "b23025", "b25003", "b25010", "b25064", "b25077")}
-    gaz = load_gazetteer()
     counties = {}
-    for fips in sorted(gaz):
+    for fips in sorted(t["b01003"]):
         sa = t["b01001"][fips]  # sex by age: 2 = male total, 3-25 male ages, 27-49 female ages
         pop = t["b01003"][fips][1]
         pop_21 = sum(sa[i] for i in list(range(9, 26)) + list(range(33, 50)))   # 21 years and over
         pop_65 = sum(sa[i] for i in list(range(20, 26)) + list(range(44, 50)))   # 65 years and over
         edu = t["b15003"][fips]
         emp = t["b23025"][fips]
-        land = float(gaz[fips]["ALAND_SQMI"])
         counties[fips] = {
-            "cty_name_census": gaz[fips]["NAME"],
             "cty_total_population": pop,
             "cty_population_21_plus": pop_21,
             "cty_pct_population_21_plus": pct(pop_21, pop),
@@ -96,10 +86,6 @@ def build_county_table():
             "cty_pct_white_alone": pct(t["b02001"][fips][2], t["b02001"][fips][1]),
             "cty_pct_black_alone": pct(t["b02001"][fips][3], t["b02001"][fips][1]),
             "cty_pct_hispanic": pct(t["b03003"][fips][3], t["b03003"][fips][1]),
-            "cty_land_area_sqmi": land,
-            "cty_population_density_per_sqmi": round(pop / land, 2),
-            "cty_latitude": float(gaz[fips]["INTPTLAT"]),
-            "cty_longitude": float(gaz[fips]["INTPTLONG"]),
         }
     return counties
 

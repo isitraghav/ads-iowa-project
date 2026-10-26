@@ -6,3 +6,4 @@ data/processed/iowa_liquor_sales_2025_census_integrated.csv
 __pycache__/
 *.pyc
 .venv/
+.ipynb_checkpoints/

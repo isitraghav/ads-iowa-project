@@ -1,12 +1,18 @@
-DATA SOURCES - Iowa Liquor Sales 2025 + US Census county data
+DATA SOURCES - Iowa Liquor Sales 2025 + US Census ACS county data
 =============================================================
 
 1) Iowa Liquor Sales (transaction-level, Jan-Dec 2025)
-   Publisher: Iowa Department of Revenue, Alcoholic Beverages Division (via State of Iowa open data portal)
-   Dataset page: https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy
-   Agency site:  https://abd.iowa.gov/
+   Title:     "Iowa Liquor Sales, 2025", Iowa Data Hub dataset 1262
+   Publisher: Alcohol Operations Bureau, Alcohol & Tax Operations Division (State of Iowa)
+   Licence:   CC BY 4.0
+   Download:  https://idh-be.iowa.gov/api/v1/datasets/1262/rows.csv   (zip: iowa_liquor_sales_2025_1262_rows.zip)
+   Metadata:  https://idh-be.iowa.gov/api/v1/datasets/1262/
+              (numRows 2,490,620; coverage 2025-01-01 to 2025-12-31; last updated 2026-10-05)
+   Portal:    https://data.iowa.gov/
+   Agency:    https://abd.iowa.gov/
    Files (data/raw/iowa_liquor_sales/): iowa_liquor_sales_2025_1262_rows_part_0001.csv ... part_0005.csv
-   NOTE: confirm this is the exact page/export you downloaded from and record the download date.
+   NOTE: part_0005 (429,989 rows, 2025-08-27 to 2025-10-30) is an exact copy of rows already in parts
+         0003-0004, an artefact of the download zip. Parts 0001-0004 hold exactly the 2,490,620 published rows.
 
 2) American Community Survey (ACS) 5-year estimates, 2020-2024 - US Census Bureau
    Summary file directory: https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/
@@ -29,11 +35,6 @@ DATA SOURCES - Iowa Liquor Sales 2025 + US Census county data
      census_acs5y2024_b25010_iowa_counties.dat  Average household size   https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25010.dat
      census_acs5y2024_b25064_iowa_counties.dat  Median gross rent        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25064.dat
      census_acs5y2024_b25077_iowa_counties.dat  Median home value        https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25077.dat
-
-3) Census Gazetteer Files 2024 - Counties (land area, lat/lon) - US Census Bureau
-   Download:      https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/2024_Gaz_counties_national.zip
-   Documentation: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
-   File: data/raw/census/census_gazetteer2024_iowa_counties.txt
 
 Join key: 5-digit county FIPS code (Iowa state FIPS 19 + 3-digit county code).
 Census files downloaded: 2026-10-24.
